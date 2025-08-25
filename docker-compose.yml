@@ -1,0 +1,38 @@
+services:
+    goals-backend:
+        networks:
+            - goals
+        container_name: backend
+        ports:
+            - 80:80
+        volumes:
+            - logs:/logs
+        #image: trayanaboykova/goals-backend
+        build:
+          context: ./backend
+          dockerfile: Dockerfile
+    goals-frontend:
+        networks:
+            - goals
+        container_name: frontend
+        ports:
+            - 3001:3000
+        #image: trayanaboykova/goals-frontend
+        build:
+          context: ./frontend
+          dockerfile: Dockerfile
+    mongo:
+        networks:
+            - goals
+        container_name: mongodb
+        volumes:
+            - data:/data/db
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+            - MONGO_INITDB_ROOT_PASSWORD=secret
+        image: mongo
+networks:
+    goals:
+volumes:
+    logs:
+    data:
